@@ -1,5 +1,48 @@
 frappe.ui.form.on('Patient Encounter', {
     refresh: function(frm) {
+        
+
+       frm.set_query("drug_code", "drug_prescription", function(doc, cdt, cdn) {
+
+            let row = locals[cdt][cdn];
+
+            // If medication not selected
+            if (!row.medication) {
+                return {
+                    filters: [
+                        ["Item", "is_stock_item", "=", 1],
+                        ["Item", "disabled", "=", 0]
+                    ]
+                };
+            }
+
+            // If medication selected
+            if (row.medication) {
+
+                let items = [];
+
+                
+                frappe.call({
+                    method: "clinic_management.tasks.get_linked_medication_items",
+                    args: {
+                        medication: row.medication
+                    },
+                    async: false,
+                    callback: function(r) {
+                        if (r.message) {
+                            items = r.message;
+                        }
+                    }
+                });
+                return {
+                    filters: [
+                        ["Item", "name", "in", items]
+                    ]
+                };
+            }
+
+        });
+
 
         if (!frm.is_new() && frm.doc.docstatus === 1 && frm.doc.status === "Completed") {
 

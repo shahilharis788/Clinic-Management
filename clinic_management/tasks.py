@@ -63,3 +63,17 @@ def create_sales_invoice_from_encounter(patient, items, name):
 
     si.insert(ignore_permissions=True)
     return si.name
+
+
+@frappe.whitelist()
+def get_linked_medication_items(medication):
+    if not medication:
+        return []
+
+    items = frappe.get_all(
+        "Medication Linked Item",
+        filters={"parent": medication},
+        pluck="item"
+    )
+
+    return items
