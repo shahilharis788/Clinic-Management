@@ -36,7 +36,7 @@ def get_clinic_summary():
         "checked_in": checked_in,
         "engaged": engaged,
         "checked_out": checked_out,
-        "total_revenue": sum(frappe.db.get_all("Sales Invoice", pluck="grand_total"))
+        "total_revenue": sum(frappe.db.get_all("Sales Invoice", {"posting_date": today(), "status":["!=", "paid"]}, pluck="grand_total"))
     }
 
 @frappe.whitelist()
