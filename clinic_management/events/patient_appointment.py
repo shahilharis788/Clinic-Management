@@ -12,6 +12,7 @@ from frappe.utils import (
 from frappe import _
 
 og_function = PatientAppointment.validate_practitioner_unavailability
+func2 = PatientAppointment.set_status
 def custom_validate_practitioner_unavailability(self):
 		scopes = [self.practitioner, self.department, self.service_unit]
 		# appointment window
@@ -56,5 +57,7 @@ def custom_validate_practitioner_unavailability(self):
 			frappe.throw(
 				_(f"This Appointment conflicts with Practitioner Availability of type 'Unavailable': {msg}.")
 			)
-
+def custom_set_status(self):
+	pass
 PatientAppointment.validate_practitioner_unavailability = custom_validate_practitioner_unavailability
+PatientAppointment.set_status = custom_set_status

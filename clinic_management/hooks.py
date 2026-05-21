@@ -45,7 +45,8 @@ app_license = "mit"
 # include js in doctype views
 doctype_js = 	{	
 					"Patient Encounter" : "public/js/patient_encounter.js", 
-					"Patient":"public/js/patient.js"
+					"Patient":"public/js/patient.js",
+					"Patient Appointment":"public/js/patient_appointment.js"
 				}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -142,8 +143,8 @@ doctype_js = 	{
 # Hook on document methods and events
 import clinic_management.events.patient_appointment
 doc_events = {
-	"Patient Appointment": {
-		#"validate": "clinic_management.tasks.set_start_end_time",
+	"Patient Encounter": {
+		"on_submit": "clinic_management.tasks.update_appointment_status",
 	}
 }
 

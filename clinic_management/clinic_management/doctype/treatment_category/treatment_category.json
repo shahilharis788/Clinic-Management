@@ -1,0 +1,64 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:treatment_category",
+ "creation": "2026-05-21 18:52:44.416847",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "treatment_category",
+  "standard_durationin_miniutes",
+  "column_break_wuqp",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "treatment_category",
+   "fieldtype": "Data",
+   "label": "Treatment Category",
+   "unique": 1
+  },
+  {
+   "fieldname": "standard_durationin_miniutes",
+   "fieldtype": "Float",
+   "label": "Standard Duration(in miniutes)"
+  },
+  {
+   "fieldname": "column_break_wuqp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-21 18:55:55.724201",
+ "modified_by": "Administrator",
+ "module": "clinic management",
+ "name": "Treatment Category",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
