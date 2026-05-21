@@ -1,7 +1,7 @@
 frappe.ui.form.on('Patient Encounter', {
     refresh: function(frm) {
         
-
+        
        frm.set_query("drug_code", "drug_prescription", function(doc, cdt, cdn) {
 
             let row = locals[cdt][cdn];
@@ -292,5 +292,34 @@ frappe.ui.form.on('Patient Encounter', {
                 d.show();
             }, __('Create'));
         }
+        render_tooth_chart(frm);
+    },
+    custom_tooth_number_chart(frm) {
+        render_tooth_chart(frm);
     }
 });
+
+function render_tooth_chart(frm) {
+	let image = frm.doc.custom_tooth_number_chart;
+
+	if (image) {
+		frm.fields_dict.custom_image.$wrapper.html(`
+			<div style="text-align:center;">
+				<img 
+					src="${image}" 
+					style="
+						width: 600px;
+						height: 400px;
+						object-fit: contain;
+						border: 1px solid #d1d8dd;
+						border-radius: 8px;
+						padding: 5px;
+						background: #fff;
+					"
+				>
+			</div>
+		`);
+	} else {
+		frm.fields_dict.custom_image.$wrapper.html("");
+	}
+}
