@@ -257,4 +257,45 @@ doc_events = {
 # ------------
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
-
+fixtures = [
+	{
+		"dt": "Custom Field",
+		"filters": [
+			[
+				"name",
+				"in",
+				[
+					"Patient-custom_treatment_category",
+					"Patient Encounter-custom_treatment_category",
+					"Lab Test-custom_type_of_work",
+					"Lab Test-custom_received_on",
+					"Lab Test-custom_work_send_on",
+					"Lab Test-custom_lab_name",
+					"Lab Test-custom_lab_department",
+					"Patient Encounter-custom_tooth_number_chart",
+					"Patient-custom_dental_history",
+					"Patient-custom_dental_history_details",
+					"Patient-custom_referred_by",
+					"Patient-custom_referral_information"
+				]
+			]
+		]
+	},
+	{
+		"dt": "Property Setter",
+		"filters": [
+			[
+				"name",
+				"in",
+				[
+					"Patient-main-field_order",
+					"Patient Encounter-main-field_order",
+					"Lab Test-main-field_order",
+					"Patient Appointment-status-default",
+					"Patient Appointment-status-read_only",
+					"Patient Encounter-physical_examination-hidden"
+				]
+			]
+		]
+	}
+]
