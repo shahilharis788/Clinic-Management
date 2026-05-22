@@ -145,6 +145,7 @@ import clinic_management.events.patient_appointment
 doc_events = {
 	"Patient Encounter": {
 		"on_submit": "clinic_management.tasks.update_appointment_status",
+		"validate":"clinic_management.tasks.set_engaged"
 	}
 }
 
@@ -276,7 +277,8 @@ fixtures = [
 					"Patient-custom_dental_history",
 					"Patient-custom_dental_history_details",
 					"Patient-custom_referred_by",
-					"Patient-custom_referral_information"
+					"Patient-custom_referral_information",
+					"Patient-custom_type"
 				]
 			]
 		]
@@ -293,9 +295,13 @@ fixtures = [
 					"Lab Test-main-field_order",
 					"Patient Appointment-status-default",
 					"Patient Appointment-status-read_only",
-					"Patient Encounter-physical_examination-hidden"
+					"Patient Encounter-physical_examination-hidden",
+					"Patient Appointment-status-options"
 				]
 			]
 		]
 	}
 ]
+override_doctype_class = {
+	"Patient Encounter": "clinic_management.overrides.patient_encounter.CustomPatientEncounter"
+}

@@ -6,4 +6,17 @@ from frappe.model.document import Document
 
 
 class ReferredBy(Document):
-	pass
+	def autoname(self):
+		field_map = {
+			"Customer": "customer",
+			"Patient": "patient",
+			"Relative": "relative_name",
+			"Social Media": "social_media_platform",
+			"Other": "other_reference",
+			"Online Platform": "online_platform"
+		}
+
+		fieldname = field_map.get(self.type)
+
+		if fieldname and self.get(fieldname):
+			self.name = self.get(fieldname)

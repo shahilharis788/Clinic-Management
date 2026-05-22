@@ -1,7 +1,6 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "REF-.YYYY.-.#####",
  "creation": "2026-05-21 16:53:18.522623",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -69,11 +68,10 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-21 17:06:29.104680",
+ "modified": "2026-05-22 12:19:16.996428",
  "modified_by": "Administrator",
  "module": "clinic management",
  "name": "Referred By",
- "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

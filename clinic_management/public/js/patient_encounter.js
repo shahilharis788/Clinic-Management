@@ -305,20 +305,138 @@ function render_tooth_chart(frm) {
 	if (image) {
 		frm.fields_dict.custom_image.$wrapper.html(`
 			<div style="text-align:center;">
-				<img 
-					src="${image}" 
+
+				<div style="margin-bottom: 10px;">
+					<button class="btn btn-sm btn-default zoom-in">+</button>
+					<button class="btn btn-sm btn-default zoom-out">-</button>
+					<button class="btn btn-sm btn-default zoom-reset">Reset</button>
+				</div>
+
+				<div style="margin-bottom: 10px;">
+					<button class="btn btn-sm btn-default move-up">↑</button>
+					<br><br>
+					<button class="btn btn-sm btn-default move-left">←</button>
+					<button class="btn btn-sm btn-default move-right">→</button>
+					<br><br>
+					<button class="btn btn-sm btn-default move-down">↓</button>
+				</div>
+
+				<div 
+					id="tooth-chart-container"
 					style="
-						width: 600px;
-						height: 400px;
-						object-fit: contain;
+						width: 100%;
+						height: 450px;
+						overflow: auto;
 						border: 1px solid #d1d8dd;
 						border-radius: 8px;
-						padding: 5px;
-						background: #fff;
+						padding: 10px;
+						background: #f9f9f9;
+						position: relative;
 					"
 				>
+					<img 
+						id="tooth-chart-image"
+						src="${image}" 
+						style="
+							width: 600px;
+							height: 400px;
+							object-fit: contain;
+							background: #fff;
+							transition: transform 0.2s ease;
+							transform: scale(1) translate(0px, 0px);
+							transform-origin: center center;
+							cursor: grab;
+						"
+					>
+				</div>
 			</div>
 		`);
+
+		let scale = 1;
+		let moveX = 0;
+		let moveY = 0;
+
+		const wrapper = frm.fields_dict.custom_image.$wrapper;
+		const img = wrapper.find("#tooth-chart-image");
+
+		function update_transform() {
+			img.css(
+				"transform",
+				`translate(${moveX}px, ${moveY}px) scale(${scale})`
+			);
+		}
+
+		// Zoom
+		wrapper.find(".zoom-in").on("click", function () {
+			scale += 0.1;
+			update_transform();
+		});
+
+		wrapper.find(".zoom-out").on("click", function () {
+			if (scale > 0.2) {
+				scale -= 0.1;
+				update_transform();
+			}
+		});
+
+		wrapper.find(".zoom-reset").on("click", function () {
+			scale = 1;
+			moveX = 0;
+			moveY = 0;
+			update_transform();
+		});
+
+		// Move controls
+		wrapper.find(".move-left").on("click", function () {
+			moveX -= 20;
+			update_transform();
+		});
+
+		wrapper.find(".move-right").on("click", function () {
+			moveX += 20;
+			update_transform();
+		});
+
+		wrapper.find(".move-up").on("click", function () {
+			moveY -= 20;
+			update_transform();
+		});
+
+		wrapper.find(".move-down").on("click", function () {
+			moveY += 20;
+			update_transform();
+		});
+
+		// Double click zoom
+		img.on("dblclick", function () {
+			scale = scale === 1 ? 2 : 1;
+			update_transform();
+		});
+
+		// Drag movement
+		let isDragging = false;
+		let startX, startY;
+
+		img.on("mousedown", function (e) {
+			isDragging = true;
+			startX = e.pageX - moveX;
+			startY = e.pageY - moveY;
+			img.css("cursor", "grabbing");
+		});
+
+		$(document).on("mousemove", function (e) {
+			if (isDragging) {
+				moveX = e.pageX - startX;
+				moveY = e.pageY - startY;
+				update_transform();
+			}
+		});
+
+		$(document).on("mouseup", function () {
+			isDragging = false;
+			img.css("cursor", "grab");
+		});
+
 	} else {
 		frm.fields_dict.custom_image.$wrapper.html("");
 	}

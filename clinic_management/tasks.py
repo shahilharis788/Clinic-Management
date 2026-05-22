@@ -79,24 +79,11 @@ def get_linked_medication_items(medication):
 
 	return items
 
+#custom_treatment_category is multiselect field in patient encounter and patient doctype
+
+
 def update_appointment_status(doc, method=None):
 	msg = []
-
-	treat_cat = doc.custom_treatment_category
-
-	if treat_cat:
-		frappe.db.set_value(
-			"Patient",
-			doc.patient,
-			"custom_treatment_category",
-			treat_cat
-		)
-
-		msg.append(
-			f"Treatment category for patient "
-			f"{doc.patient} - {doc.patient_name} set as {treat_cat}"
-		)
-
 	if doc.status == "Completed" and doc.appointment:
 
 		frappe.db.set_value(
@@ -107,9 +94,44 @@ def update_appointment_status(doc, method=None):
 		)
 
 		msg.append(
-			f"{doc.patient} - {doc.patient_name} with appointment "
-			f"{doc.appointment} has been checked out"
+			f"patient - <b>{doc.patient_name}</b> with appointment "
+			f"<b>{doc.appointment}<b> has been checked out"
 		)
 
 	if msg:
 		frappe.msgprint("<br>".join(msg))
+
+def set_engaged(doc, method=None):
+	patient_encounter_category = [row.treatment_category for row in doc.custom_treatment_category]
+	exisiting_category = frappe.db.get_all("Treatment Category Detail",{"parent":doc.patient},pluck="treatment_category")
+	patient_doc = frappe.get_doc("Patient", doc.patient)
+	for category in patient_encounter_category:
+		if not category:
+			continue
+		if category not in exisiting_category:
+			patient_doc.append("custom_treatment_category", {
+				"treatment_category": category
+			})
+
+	patient_doc.save(ignore_permissions=True)
+	if not doc.appointment:
+		return
+
+	app_status = frappe.db.get_value(
+		"Patient Appointment",
+		doc.appointment,
+		"status"
+	)
+
+	if doc.docstatus == 0 and app_status != "Engaged":
+		frappe.db.set_value(
+			"Patient Appointment",
+			doc.appointment,
+			"status",
+			"Engaged",
+		)
+
+		frappe.msgprint(
+			f"Patient - <b>{doc.patient_name}</b> with appointment "
+			f"<b>{doc.appointment}</b> has been Engaged"
+		)
